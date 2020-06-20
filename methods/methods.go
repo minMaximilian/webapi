@@ -57,7 +57,7 @@ func GetYears(w http.ResponseWriter, r *http.Request) {
 
 		s = append(s, Year)
 	}
-	json.NewEncoder(w).Encode(s)
+	json.NewEncoder(w).Encode(model.List{Data: s})
 }
 
 func GetYear(w http.ResponseWriter, r *http.Request) {
@@ -97,7 +97,7 @@ func GetYear(w http.ResponseWriter, r *http.Request) {
 
 		s = append(s, Month)
 	}
-	json.NewEncoder(w).Encode(s)
+	json.NewEncoder(w).Encode(model.List{Data: s})
 }
 
 func GetYearMonth(w http.ResponseWriter, r *http.Request) {
@@ -137,7 +137,7 @@ func GetYearMonth(w http.ResponseWriter, r *http.Request) {
 
 		s = append(s, Day)
 	}
-	json.NewEncoder(w).Encode(s)
+	json.NewEncoder(w).Encode(model.List{Data: s})
 }
 
 func GetPost(w http.ResponseWriter, r *http.Request) {

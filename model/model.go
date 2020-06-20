@@ -15,3 +15,7 @@ type Comment struct {
 	Alias string `json: "Alias"`
 	Body  string `json: "Body"`
 }
+
+type List struct {
+	Data []string `json: "Data"`
+}
