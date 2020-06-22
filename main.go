@@ -8,6 +8,7 @@ import (
 	"webapi/routes"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors" // for testing
 )
 
 func main() {
@@ -17,5 +18,6 @@ func main() {
 
 	fmt.Println("Starting Server")
 
-	log.Fatal(http.ListenAndServe(":6969", r))
+	handler := cors.Default().Handler(r)             // testing
+	log.Fatal(http.ListenAndServe(":6969", handler)) // log.Fatal(http.ListenAndServe(":6969", r))
 }

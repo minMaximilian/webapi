@@ -19,3 +19,12 @@ type Comment struct {
 type List struct {
 	Data []string `json: "Data"`
 }
+
+type PreviewList struct {
+	Data []Preview `json: "Data"`
+}
+
+type Preview struct {
+	Title string `json: "Title"`
+	ID    string `json: "ID"`
+}

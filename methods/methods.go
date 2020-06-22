@@ -60,6 +60,7 @@ func GetYears(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(model.List{Data: s})
 }
 
+// Grabs all the months I have posted in
 func GetYear(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -100,6 +101,7 @@ func GetYear(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(model.List{Data: s})
 }
 
+// Returns an ID, and a Title for the blog post
 func GetYearMonth(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -117,29 +119,31 @@ func GetYearMonth(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var (
-		s   []string
-		Day string
+		s     []model.Preview
+		ID    string
+		Title string
 	)
 
 	w.WriteHeader(200)
-	rows, err := db.Query("SELECT DISTINCT Day FROM posts WHERE Year =? AND Month =? ", params["Year"], params["Month"])
+	rows, err := db.Query("SELECT ID, Title FROM posts WHERE Year =? AND Month =? ", params["Year"], params["Month"])
 	defer rows.Close()
 	if err != nil {
 		w.WriteHeader(500)
 		return
 	}
 	for rows.Next() {
-		err := rows.Scan(&Day)
+		err := rows.Scan(&ID, &Title)
 		if err != nil {
 			w.WriteHeader(500)
 			return
 		}
 
-		s = append(s, Day)
+		s = append(s, model.Preview{ID: ID, Title: Title})
 	}
-	json.NewEncoder(w).Encode(model.List{Data: s})
+	json.NewEncoder(w).Encode(model.PreviewList{Data: s})
 }
 
+// Grabs everything you need about the post
 func GetPost(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -166,7 +170,7 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 	)
 
 	w.WriteHeader(200)
-	err := db.QueryRow("SELECT * FROM posts WHERE Year =? AND Month =? AND Day =?", params["Year"], params["Month"], params["Day"]).Scan(&ID, &Body, &Title, &Year, &Month, &Day)
+	err := db.QueryRow("SELECT * FROM posts WHERE ID =?", params["Id"]).Scan(&ID, &Body, &Title, &Year, &Month, &Day)
 	if err != nil {
 		w.WriteHeader(500)
 		return
