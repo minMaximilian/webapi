@@ -28,3 +28,7 @@ type Preview struct {
 	Title string `json: "Title"`
 	ID    string `json: "ID"`
 }
+
+type Single struct {
+	ID string `json: "ID"`
+}

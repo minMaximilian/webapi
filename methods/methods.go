@@ -170,11 +170,39 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 	)
 
 	w.WriteHeader(200)
-	err := db.QueryRow("SELECT * FROM posts WHERE ID =?", params["Id"]).Scan(&ID, &Body, &Title, &Year, &Month, &Day)
+	err := db.QueryRow("SELECT * FROM posts WHERE ID =?", params["id"]).Scan(&ID, &Body, &Title, &Year, &Month, &Day)
 	if err != nil {
 		w.WriteHeader(500)
 		return
 	}
 
 	json.NewEncoder(w).Encode(model.Blog{ID: ID, Title: Title, Body: Body, Year: Year, Month: Month, Day: Day})
+}
+
+func GetLatest(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	if err != nil {
+		w.WriteHeader(500)
+		return
+	}
+
+	err = db.Ping()
+	if err != nil {
+		w.WriteHeader(500)
+		return
+	}
+
+	var (
+		ID string
+	)
+
+	w.WriteHeader(200)
+	err := db.QueryRow("SELECT MAX(ID) FROM posts").Scan(&ID)
+	if err != nil {
+		w.WriteHeader(500)
+		return
+	}
+
+	json.NewEncoder(w).Encode(model.Single{ID: ID})
 }
