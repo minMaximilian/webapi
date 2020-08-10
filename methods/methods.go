@@ -13,7 +13,8 @@ var (
 	db, err = secrets.CreateDB()
 )
 
-/* TODO */
+// TODO 
+/*
 func GetComment(w http.ResponseWriter, r *http.Request) {
 
 }
@@ -21,6 +22,7 @@ func GetComment(w http.ResponseWriter, r *http.Request) {
 func PostComment(w http.ResponseWriter, r *http.Request) {
 
 }
+*/
 
 func GetYears(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
